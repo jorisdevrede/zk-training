@@ -1,0 +1,55 @@
+---
+
+- name: Zookeeper - create group
+  group: name=zookeeper state=present
+
+- name: Zookeeper - create user
+  user: name=zookeeper state=present
+  
+- name: Zookeeper - create package location
+  file: path=/home/ubuntu state=directory owner=ubuntu group=ubuntu
+
+- name: Zookeeper - download 3.4.10 package
+  get_url:
+    url: "http://apache.cs.uu.nl/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz"
+    dest: /home/ubuntu
+    mode: 0444
+
+- name: Zookeeper - create root directory
+  file: path=/opt/zk state=directory owner=zookeeper group=zookeeper
+
+- name: Zookeeper - install package
+  unarchive:
+    src: /home/ubuntu/zookeeper-3.4.10.tar.gz
+    dest: /opt/zk
+    remote_src: true
+    owner: zookeeper
+    group: zookeeper
+
+# configure server1
+
+- name: Zookeeper server1 - create root directory
+  file: path=/opt/zk/server1 state=directory owner=zookeeper group=zookeeper
+
+- name: Zookeeper server1 - create conf dir
+  file: path=/opt/zk/server1/conf state=directory owner=zookeeper group=zookeeper
+
+- name: Zookeeper server1 - copy config
+  copy: src=server1.cfg dest=/opt/zk/server1/conf/zoo.cfg force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+
+- name: Zookeeper server1 - copy systemd script
+  copy: src=zk-server1.service dest=/lib/systemd/system/zk-server1.service force=yes owner=root group=root
+
+# configure server 2
+
+- name: Zookeeper server2 - create root directory
+  file: path=/opt/zk/server2 state=directory owner=zookeeper group=zookeeper
+
+- name: Zookeeper server2 - create conf dir
+  file: path=/opt/zk/server2/conf state=directory owner=zookeeper group=zookeeper
+
+- name: Zookeeper server2 - copy config
+  copy: src=server2.cfg dest=/opt/zk/server2/conf/zoo.cfg force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+
+- name: Zookeeper server2 - copy systemd script
+  copy: src=zk-server2.service dest=/lib/systemd/system/zk-server2.service force=yes owner=root group=root
