@@ -1,0 +1,10 @@
+[Unit]
+Description=Zookeeper server{{ server_id }}
+Requires=network.target
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/java -cp "/opt/zk/zookeeper-3.4.10/zookeeper-3.4.10.jar:/opt/zk/zookeeper-3.4.10/lib/slf4j-api-1.6.1.jar:/opt/zk/zookeeper-3.4.10/lib/slf4j-log4j12-1.6.1.jar:/opt/zk/zookeeper-3.4.10/lib/log4j-1.2.16.jar:/opt/zk/server{{ server_id }}/conf" org.apache.zookeeper.server.quorum.QuorumPeerMain /opt/zk/server{{ server_id }}/conf/zoo.cfg
+
+[Install]
+WantedBy=default.target
