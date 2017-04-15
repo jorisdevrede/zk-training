@@ -5,7 +5,7 @@ syncLimit=5
 dataDir=/opt/zk/server{{ server_id }}/data
 dataLogDir=/opt/zk/server{{ server_id }}/datalog
 
-clientPort=2191
+clientPort={{ zk_client_port }}
 
 autopurge.snapRetainCount=3
 autopurge.purgeInterval=1
