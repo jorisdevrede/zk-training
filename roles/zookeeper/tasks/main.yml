@@ -40,6 +40,9 @@
 - name: "Zookeeper server{{ server_id }} - copy config"
   template: src=zoo.cfg.j2 dest="/opt/zk/server{{ server_id }}/conf/zoo.cfg" force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
 
+- name: "Zookeeper server{{ server_id }} - copy log4j"
+  template: src=log4j.properties.j2 dest="/opt/zk/server{{ server_id }}/conf/log4j.properties" force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+
 - name: "Zookeeper server{{ server_id }} - create data dir"
   file: path="/opt/zk/server{{ server_id }}/data" state=directory owner=zookeeper group=zookeeper
 
@@ -65,6 +68,9 @@
 
 - name: "Zookeeper server{{ server_id }} - copy config"
   template: src=zoo.cfg.j2 dest="/opt/zk/server{{ server_id }}/conf/zoo.cfg" force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+
+- name: "Zookeeper server{{ server_id }} - copy log4j"
+  template: src=log4j.properties.j2 dest="/opt/zk/server{{ server_id }}/conf/log4j.properties" force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
 
 - name: "Zookeeper server{{ server_id }} - create data dir"
   file: path="/opt/zk/server{{ server_id }}/data" state=directory owner=zookeeper group=zookeeper
