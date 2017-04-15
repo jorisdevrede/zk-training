@@ -28,28 +28,53 @@
 
 # configure server1
 
-- name: Zookeeper server1 - create root directory
-  file: path=/opt/zk/server1 state=directory owner=zookeeper group=zookeeper
+- name: Zookeeper server1 - set server_id
+  set_fact: server_id="1" zk_client_port="2191"
 
-- name: Zookeeper server1 - create conf dir
-  file: path=/opt/zk/server1/conf state=directory owner=zookeeper group=zookeeper
+- name: "Zookeeper server{{ server_id }} - create root directory"
+  file: path="/opt/zk/server{{ server_id }}" state=directory owner=zookeeper group=zookeeper
 
-- name: Zookeeper server1 - copy config
-  copy: src=server1.cfg dest=/opt/zk/server1/conf/zoo.cfg force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+- name: "Zookeeper server{{ server_id }} - create conf dir"
+  file: path="/opt/zk/server{{ server_id }}/conf" state=directory owner=zookeeper group=zookeeper
 
-- name: Zookeeper server1 - copy systemd script
-  copy: src=zk-server1.service dest=/lib/systemd/system/zk-server1.service force=yes owner=root group=root
+- name: "Zookeeper server{{ server_id }} - copy config"
+  template: src=zoo.cfg.j2 dest="/opt/zk/server{{ server_id }}/conf/zoo.cfg" force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+
+- name: "Zookeeper server{{ server_id }} - create data dir"
+  file: path="/opt/zk/server{{ server_id }}/data" state=directory owner=zookeeper group=zookeeper
+
+- name: "Zookeeper server{{ server_id }} - copy myid"
+  template: src=myid.j2 dest="/opt/zk/server{{ server_id }}/data/myid" owner=zookeeper group=zookeeper
+
+- name: "Zookeeper server{{ server_id }} - copy systemd script"
+  copy: src=zk-server.service dest="/lib/systemd/system/zk-server{{ server_id }}.service" force=yes owner=root group=root
+
+- name: "Zookeeper server{{ server_id }} - start service"
+  systemd: name="zk-server{{ server_id }}.service" state=restarted daemon_reload=yes enabled=yes
 
 # configure server 2
 
-- name: Zookeeper server2 - create root directory
-  file: path=/opt/zk/server2 state=directory owner=zookeeper group=zookeeper
+- name: Zookeeper server1 - set server_id
+  set_fact: server_id="2" zk_client_port="2192"
 
-- name: Zookeeper server2 - create conf dir
-  file: path=/opt/zk/server2/conf state=directory owner=zookeeper group=zookeeper
+- name: "Zookeeper server{{ server_id }} - create root directory"
+  file: path="/opt/zk/server{{ server_id }}" state=directory owner=zookeeper group=zookeeper
 
-- name: Zookeeper server2 - copy config
-  copy: src=server2.cfg dest=/opt/zk/server2/conf/zoo.cfg force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+- name: "Zookeeper server{{ server_id }} - create conf dir"
+  file: path="/opt/zk/server{{ server_id }}/conf" state=directory owner=zookeeper group=zookeeper
 
-- name: Zookeeper server2 - copy systemd script
-  copy: src=zk-server2.service dest=/lib/systemd/system/zk-server2.service force=yes owner=root group=root
+- name: "Zookeeper server{{ server_id }} - copy config"
+  template: src=zoo.cfg.j2 dest="/opt/zk/server{{ server_id }}/conf/zoo.cfg" force=yes backup=yes owner=zookeeper group=zookeeper mode=0640
+
+- name: "Zookeeper server{{ server_id }} - create data dir"
+  file: path="/opt/zk/server{{ server_id }}/data" state=directory owner=zookeeper group=zookeeper
+
+- name: "Zookeeper server{{ server_id }} - copy myid"
+  template: src=myid.j2 dest="/opt/zk/server{{ server_id }}/data/myid" owner=zookeeper group=zookeeper
+
+- name: "Zookeeper server{{ server_id }} - copy systemd script"
+  copy: src=zk-server.service dest="/lib/systemd/system/zk-server{{ server_id }}.service" force=yes owner=root group=root
+
+- name: "Zookeeper server{{ server_id }} - start service"
+  systemd: name="zk-server{{ server_id }}.service" state=restarted daemon_reload=yes enabled=yes
+  
