@@ -1,0 +1,17 @@
+tickTime=2000
+initLimit=10
+syncLimit=5
+
+dataDir=/opt/zk/server{{ server_id }}/data
+dataLogDir=/opt/zk/server{{ server_id }}/datalog
+
+clientPort=2191
+
+autopurge.snapRetainCount=3
+autopurge.purgeInterval=1
+
+snapCount=10
+
+server.1={{ ansible_default_ipv4.address }}:2891:3891
+server.2={{ ansible_default_ipv4.address }}:2892:3892
+
