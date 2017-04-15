@@ -47,7 +47,7 @@
   template: src=myid.j2 dest="/opt/zk/server{{ server_id }}/data/myid" owner=zookeeper group=zookeeper
 
 - name: "Zookeeper server{{ server_id }} - copy systemd script"
-  copy: src=zk-server.service dest="/lib/systemd/system/zk-server{{ server_id }}.service" force=yes owner=root group=root
+  template: src=zk-server.service.j2 dest="/lib/systemd/system/zk-server{{ server_id }}.service" force=yes owner=root group=root
 
 - name: "Zookeeper server{{ server_id }} - start service"
   systemd: name="zk-server{{ server_id }}.service" state=restarted daemon_reload=yes enabled=yes
@@ -73,7 +73,7 @@
   template: src=myid.j2 dest="/opt/zk/server{{ server_id }}/data/myid" owner=zookeeper group=zookeeper
 
 - name: "Zookeeper server{{ server_id }} - copy systemd script"
-  copy: src=zk-server.service dest="/lib/systemd/system/zk-server{{ server_id }}.service" force=yes owner=root group=root
+  template: src=zk-server.service.j2 dest="/lib/systemd/system/zk-server{{ server_id }}.service" force=yes owner=root group=root
 
 - name: "Zookeeper server{{ server_id }} - start service"
   systemd: name="zk-server{{ server_id }}.service" state=restarted daemon_reload=yes enabled=yes
