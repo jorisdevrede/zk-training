@@ -1,0 +1,4 @@
+---
+
+- name: Training Image - disable automatic updates
+  lineinfile: name='/etc/apt/apt.conf.d/10periodic' regexp='Update-Package-Lists' line='APT::Periodic::Update-Package-Lists "0";'
