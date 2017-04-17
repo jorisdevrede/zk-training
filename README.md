@@ -1,8 +1,8 @@
 # zk-training
 
-Zookeeper training VM.
+Zookeeper training VM. Assumes a clean Ubuntu Desktop 16.04 LTS installation with an ubuntu default user. Ubuntu Desktop can be downloaded here: http://releases.ubuntu.com/16.04/ubuntu-16.04.2-desktop-amd64.iso
 
-##Installation
+## Installation
 ```
 ~$ sudo visudo
 ubuntu  ALL=(ALL) NOPASSWD: ALL
