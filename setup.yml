@@ -4,5 +4,6 @@
   become: yes
   
   roles:
+  - training-image
   - java
   - zookeeper
