@@ -1,0 +1,13 @@
+#!/usr/bin/env python
+
+from kazoo.client import KazooClient
+import time
+
+zk = KazooClient(hosts="{{ ansible_default_ipv4.address }}:2191, {{ ansible_default_ipv4.address }}:2192")
+
+zk.create("/training/gemini/state", value="connected", ephemeral=True, makepath=True)
+zk.create("/training/gemini/update", value="making changes", makepath=True)
+
+while True:
+  time.sleep( 30 )
+  zk.set("/training/gemini/update", value="making changes", version=-1)
