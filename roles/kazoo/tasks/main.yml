@@ -1,0 +1,16 @@
+---
+
+- name: Kazoo script - install Python Pip
+  apt: name="python-pip" state=present
+  
+- name: Kazoo script - upgrade Python Pip
+  command: "pip install --upgrade pip"
+  
+- name: Kazoo script - install Kazoo
+  command: "pip install kazoo"
+  
+- name: Kazoo script - create directory
+  file: path=/opt/zk/kazoo state=directory owner=ubuntu group=ubuntu
+  
+- name: Kazoo script - install script
+  template: src="zk-client.py.j2"  dest="/opt/zk/kazoo/zk-client.py" owner=ubuntu group=ubuntu mode=0755
