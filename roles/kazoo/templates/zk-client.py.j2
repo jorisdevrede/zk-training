@@ -2,12 +2,20 @@
 
 from kazoo.client import KazooClient
 import time
+import sys
 
-zk = KazooClient(hosts="{{ ansible_default_ipv4.address }}:2191, {{ ansible_default_ipv4.address }}:2192")
+zk = KazooClient(hosts="{{ ansible_default_ipv4.address }}:2191,{{ ansible_default_ipv4.address }}:2192")
 
-zk.create("/training/gemini/state", value="connected", ephemeral=True, makepath=True)
-zk.create("/training/gemini/update", value="making changes", makepath=True)
+zk.start()
+
+zk.ensure_path("/training/gemini/update")
+
+zk.create("/training/gemini/state", value="connected", ephemeral=True)
 
 while True:
-  time.sleep( 30 )
-  zk.set("/training/gemini/update", value="making changes", version=-1)
+  try:
+    time.sleep( 5 )
+    zk.set("/training/gemini/update", value="making changes", version=-1)
+  except (KeyboardInterrupt, SystemExit):
+    zk.stop()
+    sys.exit()
