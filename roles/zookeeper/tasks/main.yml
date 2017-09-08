@@ -7,12 +7,12 @@
   user: name=zookeeper state=present
   
 - name: Zookeeper - create package location
-  file: path=/home/ubuntu state=directory owner=ubuntu group=ubuntu
+  file: path=/home/ubuntu/packages state=directory owner=ubuntu group=ubuntu
 
 - name: Zookeeper - download 3.4.10 package
   get_url:
     url: "http://apache.cs.uu.nl/zookeeper/zookeeper-3.4.10/zookeeper-3.4.10.tar.gz"
-    dest: /home/ubuntu
+    dest: /home/ubuntu/packages
     mode: 0444
 
 - name: Zookeeper - create root directory
@@ -20,7 +20,7 @@
 
 - name: Zookeeper - install package
   unarchive:
-    src: /home/ubuntu/zookeeper-3.4.10.tar.gz
+    src: /home/ubuntu/packages/zookeeper-3.4.10.tar.gz
     dest: /opt/zk
     remote_src: true
     owner: zookeeper
