@@ -1,8 +1,9 @@
-# zk-training
+# [zk-training]
 
 Zookeeper training VM. Assumes a clean Ubuntu Desktop 16.04 LTS installation with an ubuntu default user. Ubuntu Desktop can be downloaded here: http://releases.ubuntu.com/16.04/ubuntu-16.04.2-desktop-amd64.iso
 
 ## Installation
+When Ansible is already installed, make sure it is at version 2.1 or higher.
 ```
 ~$ sudo visudo
 ubuntu  ALL=(ALL) NOPASSWD: ALL
