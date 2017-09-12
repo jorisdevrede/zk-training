@@ -1,21 +1,36 @@
 #!/usr/bin/env python
 
-from kazoo.client import KazooClient
 import time
 import sys
 
-zk = KazooClient(hosts="{{ ansible_default_ipv4.address }}:2191,{{ ansible_default_ipv4.address }}:2192")
+from kazoo.client import KazooClient
 
-zk.start()
+class ZkDummyClient(object):
+  """Zookeeper client that generates changes"""
 
-zk.ensure_path("/training/gemini/update")
+  def __init__(self, host_string):
+    self.zk = KazooClient(hosts=host_string)
+    
+  def run(self, root_path):
+    """Continually updates znodes"""
+    
+    self.zk.start()
+    self.zk.ensure_path(root_path + "update")
+    self.zk.create(root_path + "state", value="connected", ephemeral=True)
 
-zk.create("/training/gemini/state", value="connected", ephemeral=True)
+    while True:
+      try:
+        time.sleep( 5 )
+        self.zk.set("/training/gemini/update", value="making changes", version=-1)
+      except (KeyboardInterrupt, SystemExit):
+        self.zk.stop()
+        sys.exit()
 
-while True:
-  try:
-    time.sleep( 5 )
-    zk.set("/training/gemini/update", value="making changes", version=-1)
-  except (KeyboardInterrupt, SystemExit):
-    zk.stop()
-    sys.exit()
+if __name__ = "__main__":
+  
+  host_string = "{{ ansible_default_ipv4.address }}:2191,{{ ansible_default_ipv4.address }}:2192"
+  root_path = "/training/gemini/"
+  
+  dummy = ZkDummyClient(host_string)
+  dummy.run(root_path)
+  
