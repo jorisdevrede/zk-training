@@ -14,10 +14,14 @@ class ZkDummyClient(object):
   def run(self, root_path):
     """Continually updates znodes"""
     
+    print("Connecting to zookeeper server.")
+    
     self.zk.start()
     self.zk.ensure_path(root_path + "update")
     self.zk.create(root_path + "state", value="connected", ephemeral=True)
 
+    print("running updates on path " + root_path)
+    
     while True:
       try:
         time.sleep( 5 )
@@ -26,7 +30,7 @@ class ZkDummyClient(object):
         self.zk.stop()
         sys.exit()
 
-if __name__ = "__main__":
+if __name__ == "__main__":
   
   host_string = "{{ ansible_default_ipv4.address }}:2191,{{ ansible_default_ipv4.address }}:2192"
   root_path = "/training/gemini/"
